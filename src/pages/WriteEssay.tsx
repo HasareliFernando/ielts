@@ -61,16 +61,32 @@ export default function WriteEssay() {
     const pageHeight = 297;
     const margin = 15;
 
+    // Header (Topic)
+    pdf.setFontSize(16);
+    pdf.setFont("helvetica", "bold");
+    pdf.text(topic, 15, 20);
+
+    // Essay content
+    pdf.setFontSize(12);
+    pdf.setFont("helvetica", "normal");
+
     const lines = pdf.splitTextToSize(text, 180);
 
-    let y = 20;
-
-    pdf.setFontSize(12);
+    let y = 35; // Start below the topic
 
     lines.forEach((line: string) => {
       if (y > pageHeight - margin) {
         pdf.addPage();
-        y = 20;
+
+        // Repeat topic on new pages (optional)
+        pdf.setFontSize(16);
+        pdf.setFont("helvetica", "bold");
+        pdf.text(essay.topic, 15, 20);
+
+        pdf.setFontSize(12);
+        pdf.setFont("helvetica", "normal");
+
+        y = 35;
       }
 
       pdf.text(line, 15, y);
@@ -79,6 +95,7 @@ export default function WriteEssay() {
 
     pdf.save("essay.pdf");
   };
+
   useEffect(() => {
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
@@ -112,7 +129,7 @@ export default function WriteEssay() {
           {essay.body2}
         </p>
         <p className="whitespace-pre-wrap">
-          <b className="w-full">Conclusion:</b> <br></br>
+          <b className="w-full">Conclusion:</b>
           {essay.conclusion}
         </p>
       </div>
