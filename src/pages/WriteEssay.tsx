@@ -86,7 +86,7 @@ export default function WriteEssay() {
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-black-50">
+    <div className="flex min-h-screen bg-gray-50 !text-black">
       {/* SIDEBAR */}
       <div className="w-1/3 bg-white p-4 border-r space-y-3">
         <h2 className="text-xl font-bold">Plan</h2>
