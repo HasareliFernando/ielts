@@ -79,7 +79,7 @@ export default function PlanBeforeWriting() {
   // UI
   // =====================
   return (
-    <div className="min-h-screen bg-gray-50 p-6 space-y-6">
+    <div className="min-h-screen bg-black-50 p-6 space-y-6">
       <h1 className="text-3xl font-bold !text-blue-600">Plan Before Writing</h1>
       {/* TIMER */}
       <div className="bg-white p-4 rounded-xl shadow flex items-center gap-4">
