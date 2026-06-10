@@ -64,7 +64,7 @@ export default function WriteEssay() {
     // Header (Topic)
     pdf.setFontSize(16);
     pdf.setFont("helvetica", "bold");
-    pdf.text(topic, 15, 20);
+    pdf.text(essay.topic, 15, 20);
 
     // Essay content
     pdf.setFontSize(12);
