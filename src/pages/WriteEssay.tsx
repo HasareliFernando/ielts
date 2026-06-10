@@ -96,23 +96,23 @@ export default function WriteEssay() {
         <h2 className="text-xl font-bold">Plan</h2>
 
         <p className="whitespace-pre-wrap">
-          <b>Topic:</b>
-          <br></br> {essay.topic}
+          <b className="w-full">Topic:</b>
+          {essay.topic}
         </p>
         <p className="whitespace-pre-wrap">
-          <b>Intro:</b>
-          <br></br> {essay.introduction}
+          <b className="w-full">Intro:</b>
+          {essay.introduction}
         </p>
         <p className="whitespace-pre-wrap">
-          <b>Body 1:</b>
-          <br></br> {essay.body1}
+          <b className="w-full">Body 1:</b>
+          {essay.body1}
         </p>
         <p className="whitespace-pre-wrap">
-          <b>Body 2:</b>
-          <br></br> {essay.body2}
+          <b className="w-full">Body 2:</b>
+          {essay.body2}
         </p>
         <p className="whitespace-pre-wrap">
-          <b>Conclusion:</b> <br></br>
+          <b className="w-full">Conclusion:</b> <br></br>
           {essay.conclusion}
         </p>
       </div>
