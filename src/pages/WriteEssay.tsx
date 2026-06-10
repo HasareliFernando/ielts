@@ -1,0 +1,150 @@
+import React,{ useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+
+export default function WriteEssay() {
+  const essay = useSelector((state: RootState) => state.essay);
+
+  const [text, setText] = useState("");
+
+  // =====================
+  // TIMER
+  // =====================
+  const [seconds, setSeconds] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+  const intervalRef = useRef<number | null>(null);
+
+  const startTimer = () => {
+    if (isRunning) return;
+
+    setIsRunning(true);
+
+    intervalRef.current = window.setInterval(() => {
+      setSeconds((prev) => prev + 1);
+    }, 1000);
+  };
+
+  const stopTimer = () => {
+    setIsRunning(false);
+    if (intervalRef.current) clearInterval(intervalRef.current);
+  };
+
+  const resetTimer = () => {
+    stopTimer();
+    setSeconds(0);
+  };
+
+  const formatTime = (sec: number) => {
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${m.toString().padStart(2, "0")}:${s
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  // =====================
+  // COPY
+  // =====================
+  const copyText = () => {
+    navigator.clipboard.writeText(text);
+    alert("Copied!");
+  };
+
+  // =====================
+  // PDF
+  // =====================
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const downloadPDF = () => {
+    const pdf = new jsPDF("p", "mm", "a4");
+  
+    const pageHeight = 297;
+    const margin = 15;
+  
+    const lines = pdf.splitTextToSize(text, 180);
+  
+    let y = 20;
+  
+    pdf.setFontSize(12);
+  
+    lines.forEach((line: string) => {
+      if (y > pageHeight - margin) {
+        pdf.addPage();
+        y = 20;
+      }
+  
+      pdf.text(line, 15, y);
+      y += 7;
+    });
+  
+    pdf.save("essay.pdf");
+  };
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
+
+  return (
+    <div className="flex min-h-screen bg-gray-50">
+
+      {/* SIDEBAR */}
+      <div className="w-1/3 bg-white p-4 border-r space-y-3">
+        <h2 className="text-xl font-bold">Plan</h2>
+
+        <p><b>Topic:</b> {essay.topic}</p>
+        <p><b>Intro:</b> {essay.introduction}</p>
+        <p><b>Body 1:</b> {essay.body1}</p>
+        <p><b>Body 2:</b> {essay.body2}</p>
+        <p><b>Conclusion:</b> {essay.conclusion}</p>
+      </div>
+
+      {/* MAIN */}
+      <div className="w-2/3 p-6 space-y-4">
+
+        {/* TIMER */}
+        <div className="flex gap-3 items-center bg-white p-3 rounded">
+          <div className="text-2xl font-mono">
+            ⏱ {formatTime(seconds)}
+          </div>
+
+          <button onClick={startTimer} className="bg-green-500 text-white px-3 py-1 rounded">
+            Start
+          </button>
+
+          <button onClick={stopTimer} className="bg-red-500 text-white px-3 py-1 rounded">
+            Stop
+          </button>
+
+          <button onClick={resetTimer} className="bg-gray-500 text-white px-3 py-1 rounded">
+            Reset
+          </button>
+        </div>
+
+        {/* ACTIONS */}
+        <div className="flex gap-3">
+          <button onClick={copyText} className="bg-blue-500 text-white px-4 py-2 rounded">
+            Copy
+          </button>
+
+          <button onClick={downloadPDF} className="bg-purple-600 text-white px-4 py-2 rounded">
+            Download PDF
+          </button>
+        </div>
+
+        {/* WRITING AREA */}
+        <div ref={contentRef}>
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            className="w-full h-[500px] border p-4 rounded-lg"
+            placeholder="Write your essay here..."
+          />
+        </div>
+
+      </div>
+    </div>
+  );
+}
