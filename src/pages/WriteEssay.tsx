@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import jsPDF from "jspdf";
@@ -85,33 +85,36 @@ export default function WriteEssay() {
     };
   }, []);
 
+  const wordCount = useMemo(() => {
+    return text.trim() ? text.trim().split(/\s+/).length : 0;
+  }, [text]);
+
   return (
     <div className="flex min-h-screen bg-gray-50 !text-black">
       {/* SIDEBAR */}
       <div className="w-1/3 bg-white p-4 border-r space-y-3">
         <h2 className="text-xl font-bold">Plan</h2>
 
-        <p>
+        <p className="whitespace-pre-wrap">
           <b>Topic:</b> {essay.topic}
         </p>
-        <p>
+        <p className="whitespace-pre-wrap">
           <b>Intro:</b> {essay.introduction}
         </p>
-        <p>
+        <p className="whitespace-pre-wrap">
           <b>Body 1:</b> {essay.body1}
         </p>
-        <p>
+        <p className="whitespace-pre-wrap">
           <b>Body 2:</b> {essay.body2}
         </p>
-        <p>
+        <p className="whitespace-pre-wrap">
           <b>Conclusion:</b> {essay.conclusion}
         </p>
       </div>
 
       {/* MAIN */}
       <div className="w-2/3 p-6 space-y-4">
-
-      <h1 className="text-3xl font-bold !text-blue-600">Essay</h1>
+        <h1 className="text-3xl font-bold !text-blue-600">Essay</h1>
         {/* TIMER */}
         <div className="flex gap-3 items-center bg-white p-3 rounded">
           <div className="text-2xl font-mono">⏱ {formatTime(seconds)}</div>
@@ -140,6 +143,8 @@ export default function WriteEssay() {
 
         {/* ACTIONS */}
         <div className="flex gap-3">
+          <h4 className="text-xl font-bold">Word Count - {wordCount}</h4>
+
           <button
             onClick={copyText}
             className="bg-blue-500 text-white px-4 py-2 rounded"
@@ -158,6 +163,7 @@ export default function WriteEssay() {
         {/* WRITING AREA */}
         <div ref={contentRef}>
           <textarea
+            spellCheck={false}
             value={text}
             onChange={(e) => setText(e.target.value)}
             className="w-full h-[500px] border p-4 rounded-lg"
