@@ -1,4 +1,4 @@
-import React,{ useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setEssay } from "../redux/essaySlice";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,9 @@ export default function PlanBeforeWriting() {
     conclusion: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
@@ -70,9 +72,7 @@ export default function PlanBeforeWriting() {
   const formatTime = (sec: number) => {
     const m = Math.floor(sec / 60);
     const s = sec % 60;
-    return `${m.toString().padStart(2, "0")}:${s
-      .toString()
-      .padStart(2, "0")}`;
+    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   };
 
   // =====================
@@ -80,31 +80,37 @@ export default function PlanBeforeWriting() {
   // =====================
   return (
     <div className="min-h-screen bg-gray-50 p-6 space-y-6">
-
-      <h1 className="text-3xl font-bold">Plan Before Writing</h1>
-
+      <h1 className="text-3xl font-bold !text-blue-600">Plan Before Writing</h1>
       {/* TIMER */}
       <div className="bg-white p-4 rounded-xl shadow flex items-center gap-4">
         <div className="text-3xl font-mono font-bold">
           ⏱ {formatTime(seconds)}
         </div>
 
-        <button onClick={startTimer} className="bg-green-500 text-white px-4 py-2 rounded">
+        <button
+          onClick={startTimer}
+          className="bg-green-500 text-white px-4 py-2 rounded"
+        >
           Start
         </button>
 
-        <button onClick={stopTimer} className="bg-red-500 text-white px-4 py-2 rounded">
+        <button
+          onClick={stopTimer}
+          className="bg-red-500 text-white px-4 py-2 rounded"
+        >
           Stop
         </button>
 
-        <button onClick={resetTimer} className="bg-gray-500 text-white px-4 py-2 rounded">
+        <button
+          onClick={resetTimer}
+          className="bg-gray-500 text-white px-4 py-2 rounded"
+        >
           Reset
         </button>
       </div>
 
       {/* INPUTS */}
       <div className="space-y-4">
-
         <input
           name="topic"
           placeholder="Essay Topic"
