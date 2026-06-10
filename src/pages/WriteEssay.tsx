@@ -64,19 +64,20 @@ export default function WriteEssay() {
     const lines = pdf.splitTextToSize(text, 180);
     const topic = pdf.splitTextToSize(essay.topic, 180);
 
-    let y = 20;
-
+    
+    let y1 = 20;
     pdf.setFontSize(12);
     topic.forEach((line: string) => {
-      if (y > pageHeight - margin) {
+      if (y1 > pageHeight - margin) {
         pdf.addPage();
-        y = 20;
+        y1 = 20;
       }
 
-      pdf.text(line, 15, y);
-      y += 7;
+      pdf.text(line, 15, y1);
+      y1 += 7;
     });
-
+    
+    let y = 30;
     lines.forEach((line: string) => {
       if (y > pageHeight - margin) {
         pdf.addPage();
