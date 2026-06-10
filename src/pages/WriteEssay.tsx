@@ -61,32 +61,26 @@ export default function WriteEssay() {
     const pageHeight = 297;
     const margin = 15;
 
-    // Header (Topic)
-    pdf.setFontSize(16);
-    pdf.setFont("helvetica", "bold");
-    pdf.text(essay.topic, 15, 20);
-
-    // Essay content
-    pdf.setFontSize(12);
-    pdf.setFont("helvetica", "normal");
-
     const lines = pdf.splitTextToSize(text, 180);
+    const topic = pdf.splitTextToSize(essay.topic, 180);
 
-    let y = 35; // Start below the topic
+    let y = 20;
+
+    pdf.setFontSize(12);
+    topic.forEach((line: string) => {
+      if (y > pageHeight - margin) {
+        pdf.addPage();
+        y = 20;
+      }
+
+      pdf.text(line, 15, y);
+      y += 7;
+    });
 
     lines.forEach((line: string) => {
       if (y > pageHeight - margin) {
         pdf.addPage();
-
-        // Repeat topic on new pages (optional)
-        pdf.setFontSize(16);
-        pdf.setFont("helvetica", "bold");
-        pdf.text(essay.topic, 15, 20);
-
-        pdf.setFontSize(12);
-        pdf.setFont("helvetica", "normal");
-
-        y = 35;
+        y = 20;
       }
 
       pdf.text(line, 15, y);
@@ -95,7 +89,6 @@ export default function WriteEssay() {
 
     pdf.save("essay.pdf");
   };
-
   useEffect(() => {
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
@@ -113,23 +106,23 @@ export default function WriteEssay() {
         <h2 className="text-xl font-bold">Plan</h2>
 
         <p className="whitespace-pre-wrap">
-          <b className="w-full">Topic:</b>
+          <b className="block">Topic:</b>
           {essay.topic}
         </p>
         <p className="whitespace-pre-wrap">
-          <b className="w-full">Intro:</b>
+          <b className="block">Intro:</b>
           {essay.introduction}
         </p>
         <p className="whitespace-pre-wrap">
-          <b className="w-full">Body 1:</b>
+          <b className="block">Body 1:</b>
           {essay.body1}
         </p>
         <p className="whitespace-pre-wrap">
-          <b className="w-full">Body 2:</b>
+          <b className="block">Body 2:</b>
           {essay.body2}
         </p>
         <p className="whitespace-pre-wrap">
-          <b className="w-full">Conclusion:</b>
+          <b className="block">Conclusion:</b>
           {essay.conclusion}
         </p>
       </div>
